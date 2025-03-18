@@ -13,12 +13,16 @@ import (
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
+	if err := godotenv.Load(); err != nil {
+		log.Println("Warning: .env file not found, proceeding without it")
 	}
-	ctx := context.Background()
+
 	apiKey := os.Getenv("GEMINI_API_KEY")
+	if apiKey == "" {
+		log.Fatal("GEMINI_API_KEY is not set in the environment")
+	}
+
+	ctx := context.Background()
 	llm, err := googleai.New(ctx, googleai.WithAPIKey(apiKey), googleai.WithDefaultModel("gemini-2.0-flash"))
 	if err != nil {
 		log.Fatal(err)
@@ -37,8 +41,9 @@ func main() {
 		}
 
 		prompt := requestBody.Message
-		answer, err := llms.GenerateFromSinglePrompt(ctx, llm, prompt)
+		answer, err := llms.GenerateFromSinglePrompt(c.Request.Context(), llm, prompt)
 		if err != nil {
+			log.Printf("Error generating response: %v", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate response"})
 			return
 		}
@@ -46,7 +51,11 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"answer": answer})
 	})
 
-	if err := r.Run(":8080"); err != nil {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Default to 8080 if not set
+	}
+	if err := r.Run(":" + port); err != nil {
 		log.Fatal(err)
 	}
 }
