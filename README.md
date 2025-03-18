@@ -1,6 +1,6 @@
 ![GopherImageLogo](./img/logo_with_text.png)
 
-The best Tool when you need shitty advice for a buddy that has no idea how to fix your machines. 
+The best Tool when you need shitty advice from a buddy that has no idea of how to do handy work. 
 Written in go!
 
 ## Abstract
