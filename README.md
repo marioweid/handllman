@@ -17,3 +17,61 @@ Written in go!
 - I suck at fixing stuff
 - Reading manuals is lame
 - Handymans are expensive
+
+## Prerequisites
+
+- Docker
+- Docker Compose
+- Go (for local development)
+
+## Project Structure
+
+```
+gin-docker-project
+├── src
+│   ├── main.go          # Entry point of the Gin application
+│   ├── go.mod           # Module dependencies
+│   ├── go.sum           # Checksums for module dependencies
+│   └── config
+│       └── database.go  # Database connection configuration
+├── docker-compose.yaml   # Defines services for the application
+├── Dockerfile            # Docker image build instructions
+└── README.md             # Project documentation
+```
+
+## Setup Instructions
+
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd gin-docker-project
+   ```
+
+2. **Build and run the application:**
+   Use Docker Compose to build and run the application with the following command:
+   ```bash
+   docker-compose up --build
+   ```
+
+3. **Access the application:**
+   Once the containers are up and running, you can access the Gin application at `http://localhost:8080`.
+
+## Hot Reload
+
+The Gin application is set up with hot reload using [air](https://github.com/cosmtrek/air). Any changes made to the source code will automatically restart the application.
+
+## Database Configuration
+
+The PostgreSQL database is configured in the `docker-compose.yaml` file. Ensure that the connection details in `src/config/database.go` match the environment variables set in the Docker Compose file.
+
+## Usage
+
+- To stop the application, press `CTRL+C` in the terminal where Docker Compose is running.
+- To remove the containers, run:
+  ```bash
+  docker-compose down
+  ```
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for more details.
